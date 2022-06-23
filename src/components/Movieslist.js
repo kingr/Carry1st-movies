@@ -13,7 +13,7 @@ function Movieslist() {
       >
         <div className='layout-column w-40'>
           {/* use this header for movie name */}
-          <h3 className='my-3'></h3>
+          <h3 className='my-3'>d</h3>
           {/* use this paragraph for movie ratings, for example: 'Ratings: 88/100' */}
           <p className='my-0'></p>
         </div>

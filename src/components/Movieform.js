@@ -1,16 +1,26 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
-function Movieform() {
+function Movieform({addMovie}) {
+
+  const inputName = useRef(null);
+  const inputDuration = useRef(null);
+  const inputRating = useRef(null);
+
+  const submit = (e) => {
+    e.preventDefault();
+    addMovie(inputName.current.value, inputRating.current.value, inputDuration.current.value)
+  }
 
   return (
     <section>
       <div className='card pa-30'>
-        <form onSubmit={ e => e.preventDefault() }>
+        <form onSubmit={submit}>
           <div className='layout-column mb-15'>
             <label htmlFor='name' className='mb-3'>Movie Name</label>
             <input 
               type='text' 
               id='name'
+              ref={inputName}
               placeholder='Enter Movie Name'
               data-testid='nameInput'
             />
@@ -20,6 +30,7 @@ function Movieform() {
             <input 
               type='number' 
               id='ratings'
+              ref={inputRating}
               placeholder='Enter Rating on a scale of 1 to 100'
               data-testid='ratingsInput'
             />
@@ -28,6 +39,7 @@ function Movieform() {
             <label htmlFor='duration' className='mb-3'>Duration</label>
             <input 
               type='text' 
+              ref={inputDuration}
               id='duration'
               placeholder='Enter duration in hours or minutes'
               data-testid='durationInput'
