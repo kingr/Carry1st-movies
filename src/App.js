@@ -12,16 +12,17 @@ function App() {
   // const [results, setResults] = useState("");
 
   const addMovie = (name, rating, duration) => {
-    const newMovies = setMovies.([...movies], {name, rating, duration});
-    debugger;
-    setMovies(newMovies);
+    setMovies(prevVal => [...prevVal, {name, rating, duration}]);
   }
 
   useEffect(() => {
-    if (search.length > 2) {
-      console.log('start search!')
+    if (search.length >= 2) {
+      const searchedMovies = movies.filter(({name}) => {
+        return name.includes(search);
+      })
+      setMovies(searchedMovies);
     }
-  },[search])
+  },[search,movies])
 
   return (
     <div>
@@ -32,7 +33,7 @@ function App() {
         </div>
         <div className='layout-column w-30'>
           <Search search={search} setSearch={setSearch} />
-          {movies.length > 0 ? <Movieslist /> : null }
+          {movies.length > 0 ? <Movieslist movies={movies} /> : null }
           {search.length >= 2 && 
             (<>
               <div data-testid='noResult'>

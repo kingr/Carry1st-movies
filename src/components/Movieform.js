@@ -1,14 +1,18 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 
 function Movieform({addMovie}) {
 
-  const inputName = useRef(null);
-  const inputDuration = useRef(null);
-  const inputRating = useRef(null);
+  const [isTimeInvalid, setIsTimeInvalid] = useState(false);
+  const [duration, setDuration] = useState("");
+
+  const inputName = useRef();
+  const inputRating = useRef();
 
   const submit = (e) => {
     e.preventDefault();
-    addMovie(inputName.current.value, inputRating.current.value, inputDuration.current.value)
+    if (duration.includes("m") || duration.includes("h")) {
+      addMovie(inputName.current.value, inputRating.current.value, duration);
+    }
   }
 
   return (
@@ -23,6 +27,7 @@ function Movieform({addMovie}) {
               ref={inputName}
               placeholder='Enter Movie Name'
               data-testid='nameInput'
+              onChange={() => setIsTimeInvalid(false)}
             />
           </div>
           <div className='layout-column mb-15'>
@@ -38,20 +43,29 @@ function Movieform({addMovie}) {
           <div className='layout-column mb-30'>
             <label htmlFor='duration' className='mb-3'>Duration</label>
             <input 
+              value={duration}
               type='text' 
-              ref={inputDuration}
+              onChange={e => {
+                const {value} = e.target;
+                setDuration(value)
+                if (value.includes("m") || value.includes("h")) {
+                  setIsTimeInvalid(false)
+                } else {
+                  setIsTimeInvalid(true);
+                }
+              }}
               id='duration'
               placeholder='Enter duration in hours or minutes'
               data-testid='durationInput'
             />
           </div>
           {/* Use this div when time format is invalid */}
-          {/* <div 
+          {isTimeInvalid && <div 
             className='alert error mb-30'
             data-testid='alert'
           >
             Please specify time in hours or minutes (e.g. 2.5h or 150m)
-          </div>  */}
+          </div>}
           <div className='layout-row justify-content-end'>
             <button 
               type='submit'
